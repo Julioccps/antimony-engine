@@ -85,26 +85,26 @@ int sb_init(SbContext* ctx, const char* title){
 
     ctx->graphicsFamily =(uint32_t)graphicsFamily;                       // Else, it stores the queue found
     free(queueFamilies);
-                                                                            // Priority queue, some drivers ignore, but it's required
-    float queuePriority = 1.0f;                                             // to be defines | 1.0 = High priority
-    VkDeviceQueueCreateInfo queueCreateInfo = {0};                          // 
+                                                            // Priority queue, some drivers ignore, but it's required
+    float queuePriority = 1.0f;                             // to be defines | 1.0 = High priority
+    VkDeviceQueueCreateInfo queueCreateInfo = {0};          //  Starts to define the device queue info struct that the VkDevice will need
     queueCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;     
     queueCreateInfo.queueFamilyIndex = ctx->graphicsFamily;
     queueCreateInfo.queueCount = 1;
     queueCreateInfo.pQueuePriorities = &queuePriority;
 
-    VkDeviceCreateInfo deviceCreateInfo = {0};
+    VkDeviceCreateInfo deviceCreateInfo = {0};                      // Begin to adress the info to create the device
     deviceCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
     deviceCreateInfo.pQueueCreateInfos = &queueCreateInfo;
     deviceCreateInfo.queueCreateInfoCount = 1;
 
-    if (vkCreateDevice(ctx->physicalDevice, &deviceCreateInfo, NULL, &ctx->device) != VK_SUCCESS) {
-        printf("Fatal Error: Failed to create logical device\n");
-        return 1;
+    if (vkCreateDevice(ctx->physicalDevice, &deviceCreateInfo, NULL, &ctx->device) != VK_SUCCESS) { // Tries to create the logical device
+        printf("Fatal Error: Failed to create logical device\n");                           // if fails, returns an error
+        return 1;                                                                           // else it stores the device on the context
     }
-    vkGetDeviceQueue(ctx->device, ctx->graphicsFamily, 0, &ctx->queue);
+    vkGetDeviceQueue(ctx->device, ctx->graphicsFamily, 0, &ctx->queue);     // Stores the queue to the context
 
-    VkPhysicalDeviceProperties pProperties = {0};
+    VkPhysicalDeviceProperties pProperties = {0};                    // Gets the physical device's properties to address which one is it
     vkGetPhysicalDeviceProperties(ctx->physicalDevice, &pProperties);
     printf("Physical Device: %s\n", pProperties.deviceName);
     
