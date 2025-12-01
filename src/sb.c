@@ -1,6 +1,5 @@
 #include "sb.h"
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
 #include <stdint.h>
 
@@ -57,12 +56,12 @@ int sb_init(SbContext* ctx, const char* title){
         }
     }
     
+    free(devices); // Cleans the allocated memory for the devices list, now that it was already use
+                
     if(ctx->physicalDevice == NULL){                                // If at the end,  it doesn't find a suitable one
         printf("Fatal Error: Failed to find a suitable GPU\n");     // The user is informed
         return 1;
     }
-
-    free(devices); // Cleans the allocated memory for the devices list, now that it was already used
 
     uint32_t queueFamilyCount = 0;  // Asks how many family queues the device has
     vkGetPhysicalDeviceQueueFamilyProperties(ctx->physicalDevice, &queueFamilyCount, NULL);
@@ -108,8 +107,6 @@ int sb_init(SbContext* ctx, const char* title){
     vkGetPhysicalDeviceProperties(ctx->physicalDevice, &pProperties);
     printf("Physical Device: %s\n", pProperties.deviceName);
     
-    
-
     return 0;
 }
 
