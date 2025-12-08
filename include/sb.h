@@ -3,15 +3,24 @@
 
 #include <vulkan/vulkan.h>
 #include <GLFW/glfw3.h>
+#include <vulkan/vulkan_core.h>
 
 typedef struct {
-    GLFWwindow* window;
-    VkInstance instance;
-    VkPhysicalDevice physicalDevice;
-    uint32_t graphicsFamily;
-    VkDevice device;
-    VkQueue queue;
-    // There's more to add still
+	GLFWwindow* window;
+	VkInstance instance;
+	VkSurfaceKHR surface;
+	VkPhysicalDevice physicalDevice;
+	uint32_t graphicsFamily;
+	uint32_t presentFamily;
+	VkDevice device;
+	VkQueue queue;
+	VkQueue presentQueue;
+	VkSwapchainKHR swapchain;
+	VkFormat swapchainImageFormat;
+	VkExtent2D swapchainExetent;
+	VkImage* swapchainImages;
+	VkImageView* swapchainImageViews;
+	uint32_t imagesCount;
 } SbContext;
 
 int sb_init(SbContext* ctx, const char* title);
